@@ -90,6 +90,13 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
+      - name: Echo Text
+        run: |
+          echo  ${{ secrets.AWS_ACCESS_KEY_ID }}
+          echo  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          echo  ${{ secrets.AWS_SESSION_TOKEN }}
+          
+
       - name: ECR Login
         uses: aws-actions/amazon-ecr-login@v2
         with:
@@ -118,7 +125,6 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }}
           cd ./starter/backend/k8s
           kustomize edit set image backend=043039733209.dkr.ecr.us-east-1.amazonaws.com/backend:latest
           kustomize build | kubectl apply -f -
